@@ -51,7 +51,7 @@ async function generateTranscript(channel, ticket, cfg, client) {
 }
 
 async function closeTicket(interaction, ticket, cfg) {
-  tickets.update.run({ id: ticket.id, status: 'closed', claimed_by: ticket.claimed_by ?? null, closed_at: Math.floor(Date.now() / 1000) });
+  tickets.update.run({ '@id': ticket.id, '@status': 'closed', '@claimed_by': ticket.claimed_by ?? null, '@closed_at': Math.floor(Date.now() / 1000) });
   await generateTranscript(interaction.channel, ticket, cfg, interaction.client);
   const send = (interaction.deferred || interaction.replied) ? p => interaction.editReply(p) : p => interaction.reply(p);
   await send({ embeds: [info('Ticket Closed', 'This channel will be deleted in 5 seconds.')] });

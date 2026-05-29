@@ -241,10 +241,10 @@ async function onPostButton(interaction) {
   }
 
   const existingCfg = ticketConfig.get.get(interaction.guildId);
-  ticketConfig.upsert.run({ guild_id: interaction.guildId, category_id: config.categoryId, log_channel_id: config.logChannelId, support_role_id: config.supportRoleIds[0] ?? null, support_role_ids: JSON.stringify(config.supportRoleIds), panel_channel_id: config.channelId, panel_message_id: panelMsgId, next_ticket_num: existingCfg?.next_ticket_num ?? 1 });
+  ticketConfig.upsert.run({ '@guild_id': interaction.guildId, '@category_id': config.categoryId, '@log_channel_id': config.logChannelId, '@support_role_id': config.supportRoleIds[0] ?? null, '@support_role_ids': JSON.stringify(config.supportRoleIds), '@panel_channel_id': config.channelId, '@panel_message_id': panelMsgId, '@next_ticket_num': existingCfg?.next_ticket_num ?? 1 });
 
   for (const b of config.buttons) {
-    ticketQuestions.upsert.run({ guild_id: interaction.guildId, prefix: b.prefix || 'ticket', questions: JSON.stringify(b.questions || []), category_id: b.categoryId || null, support_role_ids: b.supportRoleIds?.length ? JSON.stringify(b.supportRoleIds) : null });
+    ticketQuestions.upsert.run({ '@guild_id': interaction.guildId, '@prefix': b.prefix || 'ticket', '@questions': JSON.stringify(b.questions || []), '@category_id': b.categoryId || null, '@support_role_ids': b.supportRoleIds?.length ? JSON.stringify(b.supportRoleIds) : null });
   }
 
   builders.delete(interaction.user.id);

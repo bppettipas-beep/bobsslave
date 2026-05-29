@@ -83,7 +83,7 @@ module.exports = {
           if (!claimRoles.some(id => interaction.member?.roles.cache.has(id)))
             return interaction.reply({ embeds: [embeds.error('Permission denied', 'Only support staff can claim tickets.')], ephemeral: true });
 
-          tickets.update.run({ id: ticketId, status: 'open', claimed_by: interaction.user.id, closed_at: null });
+          tickets.update.run({ '@id': ticketId, '@status': 'open', '@claimed_by': interaction.user.id, '@closed_at': null });
           await interaction.reply({ embeds: [embeds.info('Ticket Claimed', `${interaction.user} has claimed this ticket.`)] });
           return;
         }
@@ -121,11 +121,11 @@ module.exports = {
           if (pairing.user1_id !== interaction.user.id && pairing.user2_id !== interaction.user.id)
             return interaction.reply({ embeds: [embeds.error('Not your pairing', 'You are not part of this donut pairing.')], ephemeral: true });
 
-          donutPairings.updateStatus.run({ id: pairingId, status: 'completed', completed_at: Math.floor(Date.now() / 1000) });
+          donutPairings.updateStatus.run({ '@id': pairingId, '@status': 'completed', '@completed_at': Math.floor(Date.now() / 1000) });
           donutStats.upsertInit.run(pairing.guild_id, pairing.user1_id);
           donutStats.upsertInit.run(pairing.guild_id, pairing.user2_id);
-          donutStats.recordComplete.run({ guild_id: pairing.guild_id, user_id: pairing.user1_id, round_id: pairing.round_id });
-          donutStats.recordComplete.run({ guild_id: pairing.guild_id, user_id: pairing.user2_id, round_id: pairing.round_id });
+          donutStats.recordComplete.run({ '@guild_id': pairing.guild_id, '@user_id': pairing.user1_id, '@round_id': pairing.round_id });
+          donutStats.recordComplete.run({ '@guild_id': pairing.guild_id, '@user_id': pairing.user2_id, '@round_id': pairing.round_id });
 
           const partnerId = pairing.user1_id === interaction.user.id ? pairing.user2_id : pairing.user1_id;
           await interaction.update({
@@ -145,7 +145,7 @@ module.exports = {
           if (pairing.user1_id !== interaction.user.id && pairing.user2_id !== interaction.user.id)
             return interaction.reply({ embeds: [embeds.error('Not your pairing', 'You are not part of this donut pairing.')], ephemeral: true });
 
-          donutPairings.updateStatus.run({ id: pairingId, status: 'skipped', completed_at: Math.floor(Date.now() / 1000) });
+          donutPairings.updateStatus.run({ '@id': pairingId, '@status': 'skipped', '@completed_at': Math.floor(Date.now() / 1000) });
           donutStats.upsertInit.run(pairing.guild_id, interaction.user.id);
           donutStats.recordSkip.run(pairing.guild_id, interaction.user.id);
 
@@ -273,11 +273,11 @@ async function handleQsSetup(interaction) {
 
   const existing = ticketQuestions.get.get(interaction.guildId, prefix);
   ticketQuestions.upsert.run({
-    guild_id:         interaction.guildId,
-    prefix,
-    questions:        JSON.stringify(questions),
-    category_id:      existing?.category_id      ?? null,
-    support_role_ids: existing?.support_role_ids ?? null,
+    '@guild_id':         interaction.guildId,
+    '@prefix':           prefix,
+    '@questions':        JSON.stringify(questions),
+    '@category_id':      existing?.category_id      ?? null,
+    '@support_role_ids': existing?.support_role_ids ?? null,
   });
 
   await interaction.reply({
@@ -359,11 +359,11 @@ async function createTicketChannel(interaction, prefix, answers) {
   });
 
   const result = tickets.create.run({
-    guild_id:   interaction.guildId,
-    channel_id: channel.id,
-    ticket_num: num,
-    owner_id:   interaction.user.id,
-    reason:     answers.length ? answers.map(a => `${a.question}: ${a.answer}`).join('\n') : null,
+    '@guild_id':   interaction.guildId,
+    '@channel_id': channel.id,
+    '@ticket_num': num,
+    '@owner_id':   interaction.user.id,
+    '@reason':     answers.length ? answers.map(a => `${a.question}: ${a.answer}`).join('\n') : null,
   });
   ticketConfig.bumpTicketNum.run(interaction.guildId);
 

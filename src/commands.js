@@ -250,7 +250,7 @@ const strikerole = {
     const names  = ['⚠️ Strike 1', '⚠️⚠️ Strike 2', '⚠️⚠️⚠️ Strike 3'];
     const roles  = [];
     for (let i = 0; i < 3; i++) roles.push(await interaction.guild.roles.create({ name: names[i], color: colors[i], reason: 'Strike system setup by ' + interaction.user.tag }));
-    strikeConfig.upsert.run({ guild_id: interaction.guildId, role1_id: roles[0].id, role2_id: roles[1].id, role3_id: roles[2].id });
+    strikeConfig.upsert.run({ '@guild_id': interaction.guildId, '@role1_id': roles[0].id, '@role2_id': roles[1].id, '@role3_id': roles[2].id });
     await interaction.editReply({ embeds: [embeds.success('Strike Roles Created', `${roles[0]} — first offense\n${roles[1]} — second offense\n${roles[2]} — third offense (triggers demotion)`)] });
   },
 };

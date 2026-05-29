@@ -36,7 +36,7 @@ async function runRound(client, guildId) {
 
   for (const [u1, u2] of pairs) {
     const prompt = getRandomPrompt(cfg.prompt_category);
-    donutPairings.create.run({ round_id: roundId, guild_id: guildId, user1_id: u1, user2_id: u2, prompt });
+    donutPairings.create.run({ '@round_id': roundId, '@guild_id': guildId, '@user1_id': u1, '@user2_id': u2, '@prompt': prompt });
     donutStats.upsertInit.run(guildId, u1);
     donutStats.upsertInit.run(guildId, u2);
     donutStats.incrementTotal.run(guildId, u1);
